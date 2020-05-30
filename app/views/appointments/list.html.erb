@@ -1,0 +1,31 @@
+<h1 class="day">
+<a href="/lista/<%= @yesterday %>"><span class="icon"><i class="fas fa-caret-left"></i></span></a>
+<%= l @date.to_date, format: "%A %d de %B de %Y" %>
+<a href="/lista/<%= @tomorrow %>"><span class="icon"><i class="fas fa-caret-right"></i></span></a>
+</h1>
+<% if @appointments.count > 0 %>
+<table class="table is-bordered">
+  <tr>
+  	<th>Inicio</th>
+  	<th>Fin</th>
+    <th>Laboratorio</th>
+  	<th>Estudiante</th>
+  	<th>Asesor</th>
+  	<th>Autorizó</th>
+  	<th>Notas</th>
+  </tr>
+  <% @appointments.each do |a| %>
+    <tr>
+  	  <td><%= a.start / 100 %>:00</td>
+  	  <td><%= a.end / 100 %>:00</td>
+      <td><%= a.laboratory.name %></td>
+  	  <td><%= a.student.first_name %> <%= a.student.last_name %> <%= a.student.last_name2 %></td>
+  	  <td><%= a.student.staff.first_name rescue '-' %> <%= a.student.staff.last_name rescue '-' %></td>
+  	  <td><%= a.user.first_name %> <%= a.user.last_name %></td>
+  	  <td><%= a.notes %></td>
+    </tr>
+  <% end %>
+</table>
+<% else %>
+No hay registros para este día.
+<% end %>

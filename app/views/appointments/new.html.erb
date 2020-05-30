@@ -1,0 +1,82 @@
+<%
+students = Student.where(status: 1).order(:first_name, :last_name, :last_name2).pluck(:id, :first_name, :last_name, :last_name2)
+student_options = {}
+students.each do |p|
+  student_options["#{p[1]} #{p[2]} #{p[3]}"] = p[0]
+end
+
+end_options = {}
+next_appointment = @laboratory.appointments.where("appointment_date = ? AND start > ? AND status <> ?", @date, params[:hour].to_i * 100, Appointment::DELETED).order(:start).first
+if next_appointment
+  r = params[:hour].to_i  + 1
+  next_r = next_appointment.start.to_i / 100
+  while r <= next_r
+    end_options["#{r}:00"] = r * 100
+    r = r + 1;
+  end
+else
+  r = params[:hour].to_i + 1
+  while r <= 19
+    end_options["#{r}:00"] = r * 100
+    r = r + 1;
+  end
+end
+%>
+<nav class="level lab-level">
+  <div class="level-left">
+    <div class="level-item">
+      <p class="subtitle is-5">
+        <strong><%= @laboratory.name %>: Nueva cita</strong>
+      </p>
+    </div>
+  </div>
+  <div class="level-right">
+    
+  </div>
+</nav>
+<%= form_for @appointment do |f| %>
+<%= f.hidden_field :laboratory_id, :value => @laboratory.id %>
+<%= f.hidden_field :start, :value => params[:hour].to_i * 100 %>
+<%= f.hidden_field :appointment_date, :value => @date %>
+<div class="columns is-mobile is-centered">
+<div class="column is-narrow">
+<table class="new-table">
+<tr>
+	<th>Estudiante</th>
+	<td>
+		<div class="select">
+		<%= f.select :student_id, options_for_select(student_options), prompt: "-- Seleccionar estudiante --" %>
+	    </div>
+	</td>
+</tr>
+<tr>
+	<th>Laboratorio:</th>
+	<td><%= @laboratory.name %></td>
+</tr>
+<tr>
+	<th>Día:</th>
+	<td><%= l @date.to_date, format: "%A %d de %B de %Y" %></td>
+</tr>
+<tr>
+	<th>Hora Inicio:</th>
+	<td>
+		<strong><%= params[:hour] %>:00</strong>
+	</td>
+</tr>
+<tr>
+	<th>Hora Fin:</th>
+	<td>
+		<span class="select"><%= f.select :end, options_for_select(end_options), prompt: "--" %></span>
+	</td>
+</tr>
+<tr>
+	<th style="vertical-align: top;">Notas:</th>
+	<td>
+		<%= f.text_area :notes, class: 'textarea' %>
+	</td>
+</tr>
+</table>
+<div class="save-button"><%= f.submit "Guardar", :class => 'button is-link' %></div>
+</div>
+</div>
+<% end %>

@@ -1,0 +1,106 @@
+// Place all the styles related to the Appointments controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+.controls {
+  border-bottom: 1px solid #ddd;
+  padding: 1em 0.5em 0.5em 0.5em;
+}
+
+.lab-level {
+  border-bottom: 1px solid #ddd;
+  padding: 1em;
+  margin-bottom: 0 !important;
+}
+
+.sessions-table {
+  width: 100%;
+  margin-top: 0;
+  th {
+    padding: 0.5em;
+    border-bottom: 1px solid #ddd;
+  }
+  .td-hora {
+    width: 6em;
+    text-align: center !important;
+    padding: 0.5em;
+  }
+
+  td {
+    padding: 0.5em 0.5em 0.5em 1em;
+    border-bottom: 1px dashed #eee;
+  }
+
+  tr:hover .td-hora {
+    background: #eee;
+  }
+
+  tr:hover td{
+    
+  }
+}
+
+.appointment {
+  font-size: 80%;
+  padding: 1em;
+  .student-name {
+    font-size: 100%;
+    font-weight: bold;
+  }
+  margin: 1em;
+}
+
+.c1 { background: #E0FEFE; }
+.c2 { background: #C7CEEA; }
+.c3 { background: #FFDAC1; }
+.c4 { background: #FF9AA2; }
+.c5 { background: #FFFFD8; }
+.c6 { background: #E0FEFE; }
+.c7 { background: #C7CEEA; }
+.c8 { background: #FFDAC1; }
+.c9 { background: #FF9AA2; }
+.c10 { background: #FFFFD8; }
+.c11 { background: #E0FEFE; }
+.c12 { background: #C7CEEA; }
+.c13 { background: #FFDAC1; }
+.c14 { background: #FF9AA2; }
+.c15 { background: #FFFFD8; }
+.c16 { background: #E0FEFE; }
+
+.save-button { 
+  text-align: center; 
+  margin-top: 2em;
+ }
+
+ .new-table {
+   margin-top: 2em;
+   tr {
+     td, th {
+       padding: 0.5em;
+       vertical-align: middle;
+     }
+   }
+ }
+
+ .appointment-actions {
+   float: right;
+   a {
+     color: #999;
+   }
+   a.assist:hover {
+     color: #0b0;
+   }
+   a.no-assist:hover {
+     color: #b00;
+   }
+   a.remove:hover {
+     color: blue;
+   }
+ }
+
+ h1.day {
+   margin: 0 0 2em 0;
+   font-size: 150%;
+   text-transform: uppercase;
+   font-weight: bold;
+ }

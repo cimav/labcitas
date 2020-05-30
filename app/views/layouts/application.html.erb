@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html class='has-navbar-fixed-top'>
+  <head>
+    <title>Agenda de Laboratorios</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <nav class="navbar is-fixed-top is-success" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand"><a class="navbar-item" href="/"><strong>Agenda de Laboratorio</strong></a></div>
+      <div class="navbar-end">
+        <% if authenticated? %>
+          <div class="navbar-item">
+            <span style="margin-right: 2em;"><%= current_user.first_name %> <%= current_user.last_name %></span>
+            <div class="buttons"><a class="button is-light" href="/logout">Salir</a></div>
+          </div>
+        <% else %>
+          <div class="navbar-item"><div class="buttons"><a class="button is-light" href="/auth/google_oauth2">Login</a></div></div>
+        <% end %>
+      </div>
+    </nav>
+    <div class="controls">
+      <% 
+
+      if authenticated? 
+        labs = []
+        current_user.laboratory_admins.each do |la|
+          labs << la.laboratory_id
+        end
+        laboratories = Laboratory.order(:name).where(id: labs).pluck(:id, :name)
+      else  
+        laboratories = Laboratory.order(:name).pluck(:id, :name)
+      end
+      laboratory_options = {}
+      laboratories.each do |p|
+        laboratory_options[p[1]] = p[0]
+      end
+      if @laboratory 
+        lab_id = @laboratory.id
+      else
+        lab_id = ''
+      end
+      %>
+      <div class="columns">
+      <div class="field column">
+        <div class="select is-fullwidth">
+          <%= select_tag :laboratory, options_for_select(laboratory_options, lab_id), {:prompt => "-- Selecciona laboratorio --"} %>
+        </div>
+      </div>
+      <div class="field column">
+        <input class="input" type="date" name="date" id="date" value="<%= @date %>">
+      </div>
+      </div>
+    </div>
+    </div>
+    <%= yield %>
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  </body>
+</html>

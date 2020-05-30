@@ -1,2 +1,1 @@
-# labcitas
-Asignación de espacios en laboratorios
+# LABCITAS

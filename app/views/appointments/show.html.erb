@@ -1,0 +1,78 @@
+<% 
+sessions = {}
+@laboratory.appointments.where('appointment_date = ? AND status <> ?', @date, Appointment::DELETED ).order(:start).each do |s|
+  
+  (8..18).each do |r| 
+  	h = r * 100
+    if h.to_i == s.start.to_i
+      sessions[h] = s
+    end
+  end
+end
+%>
+<nav class="level lab-level">
+  <div class="level-left">
+    <div class="level-item">
+      <p class="subtitle is-5">
+        <strong><%= @laboratory.name %></strong>
+      </p>
+    </div>
+  </div>
+  <div class="level-right">
+    <a href="/laboratorios/<%= @laboratory.id %>/<%= @yesterday %>"><span class="icon"><i class="fas fa-caret-left"></i></span></a>
+    <span class="date"><%= l @date.to_date, format: "%A %d de %B de %Y" %></span>
+    <a href="/laboratorios/<%= @laboratory.id %>/<%= @tomorrow %>"><span class="icon"><i class="fas fa-caret-right"></i></span></a>
+  </div>
+</nav>
+<table class="sessions-table">
+  <tr>
+  	<th style="text-align: center;">Hora</th>
+  	<th>Sesión</th>
+  </tr>
+  <% rowspan = 0 %>
+  <% c = 0 %>
+  <% (8..18).each do |r| %>
+    <% h = r * 100 %>
+    <tr>
+    	<td class="td-hora"><%= "#{r}:00" %></td>
+    	<% if sessions[h.to_i] %>
+    	  <% c = c + 1 %>
+    	  <% rowspan = (sessions[h.to_i].end - sessions[h.to_i].start) / 100 %>
+    	  <td class="appointment c<%= c %>" rowspan="<%= rowspan %>">
+    	  	   <div class="appointment-actions">
+    	  	   <% if sessions[h.to_i].status == Appointment::PROGRAMMED %>
+    	  	     <span class="tag">Programado</span>
+    	  	   <% end %>
+    	  	   <% if sessions[h.to_i].status == Appointment::ASSIST %>
+    	  	     <span class="tag is-success">Asistió</span>
+    	  	   <% end %>
+    	  	   <% if sessions[h.to_i].status == Appointment::NOT_ASSIST %>
+    	  	     <span class="tag is-danger">No asistió</span>
+    	  	   <% end %>
+    	  	   <% if authenticated? %>
+    	  	      <a data-id="<%= sessions[h.to_i].id %>" class="assist" title="Asistió" href=""><span class="icon"><i class="fas fa-check"></i></span></a> 
+    	  	      <a data-id="<%= sessions[h.to_i].id %>" class="no-assist" title="No asistió" href=""><span class="icon"><i class="fas fa-times"></i></span></a> 
+    	  	      <a data-id="<%= sessions[h.to_i].id %>" class="remove" title="Eliminar" href=""><span class="icon"><i class="fas fa-trash"></i></span></a>
+    	  	   <% end %>
+    		   </div>
+    		   <span class="student-name"><%= sessions[h.to_i].student.first_name %> <%= sessions[h.to_i].student.last_name %></span><br>
+    		   <span class="supervisor-name">Asesor: <%= sessions[h.to_i].student.staff.first_name rescue '-' %> <%= sessions[h.to_i].student.staff.last_name rescue '-' %></span><br>
+    		   <span class="user-name">Autoriza: <%= sessions[h.to_i].user.first_name %> <%= sessions[h.to_i].user.last_name %></span><br>
+    		   <span class="hours">De: <%= sessions[h.to_i].start / 100 %>:00 a <%= sessions[h.to_i].end / 100 %>:00</span><br>
+    		   <% if sessions[h.to_i].notes %>
+    		     <p>Notas: <%= sessions[h.to_i].notes %></p>
+    		   <% end %>
+    	   </td>
+    	<% else %>
+    	  <% rowspan = rowspan - 1 if rowspan > 0 %>
+    	  <% if rowspan == 0 %>
+    	    <td>
+    	      <% if authenticated? %>  
+    	    	<a class="button" href="<%= new_appointment_path %>?laboratory_id=<%= @laboratory.id %>&date=<%= @date %>&hour=<%= r %>">Agregar</a>
+    	      <% end %>
+    	    </td>
+    	  <% end %>
+        <% end %>
+    </tr>
+  <% end %>
+</table>
