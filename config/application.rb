@@ -12,6 +12,9 @@ module Labcitas
     config.load_defaults 6.0
     config.i18n.default_locale = 'es-MX'
     config.time_zone = "America/Chihuahua"
+    #config.web_console.whitelisted_ips = '10.0.0.8'
+    config.hosts << "labcitas.cimav.edu.mx"
+
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers

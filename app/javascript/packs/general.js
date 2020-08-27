@@ -1,7 +1,11 @@
 function change_lab_day() {
   var lab_id = $('#laboratory').val();
   var date = $('#date').val();
-  window.location = '/laboratorios/' + lab_id + '/' + date;
+  if(lab_id == '') {
+    return false
+  } else {
+    window.location = '/laboratorios/' + lab_id + '/' + date;  
+  }
 }
 
 function appointment_mark(id, status) {

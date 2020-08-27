@@ -1,6 +1,14 @@
 // Place all the styles related to the Appointments controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+body, html {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.navbar a {
+  color: #fff;
+}
 
 .controls {
   border-bottom: 1px solid #ddd;

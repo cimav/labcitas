@@ -1,4 +1,9 @@
 <% 
+is_lab_admin = false
+if authenticated?
+  labadmin = LaboratoryAdmin.where(laboratory_id: @laboratory.id, user_id: current_user.id)
+  is_lab_admin = true if labadmin.count > 0
+end
 sessions = {}
 @laboratory.appointments.where('appointment_date = ? AND status <> ?', @date, Appointment::DELETED ).order(:start).each do |s|
   
@@ -18,7 +23,7 @@ end
       </p>
     </div>
   </div>
-  <div class="level-right">
+  <div class="level-right" style="text-align: center;">
     <a href="/laboratorios/<%= @laboratory.id %>/<%= @yesterday %>"><span class="icon"><i class="fas fa-caret-left"></i></span></a>
     <span class="date"><%= l @date.to_date, format: "%A %d de %B de %Y" %></span>
     <a href="/laboratorios/<%= @laboratory.id %>/<%= @tomorrow %>"><span class="icon"><i class="fas fa-caret-right"></i></span></a>
@@ -49,7 +54,7 @@ end
     	  	   <% if sessions[h.to_i].status == Appointment::NOT_ASSIST %>
     	  	     <span class="tag is-danger">No asistió</span>
     	  	   <% end %>
-    	  	   <% if authenticated? %>
+    	  	   <% if authenticated? && is_lab_admin %>
     	  	      <a data-id="<%= sessions[h.to_i].id %>" class="assist" title="Asistió" href=""><span class="icon"><i class="fas fa-check"></i></span></a> 
     	  	      <a data-id="<%= sessions[h.to_i].id %>" class="no-assist" title="No asistió" href=""><span class="icon"><i class="fas fa-times"></i></span></a> 
     	  	      <a data-id="<%= sessions[h.to_i].id %>" class="remove" title="Eliminar" href=""><span class="icon"><i class="fas fa-trash"></i></span></a>
@@ -67,7 +72,7 @@ end
     	  <% rowspan = rowspan - 1 if rowspan > 0 %>
     	  <% if rowspan == 0 %>
     	    <td>
-    	      <% if authenticated? %>  
+    	      <% if authenticated? && is_lab_admin %>  
     	    	<a class="button" href="<%= new_appointment_path %>?laboratory_id=<%= @laboratory.id %>&date=<%= @date %>&hour=<%= r %>">Agregar</a>
     	      <% end %>
     	    </td>

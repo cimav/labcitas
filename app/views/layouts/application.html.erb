@@ -12,18 +12,17 @@
   </head>
 
   <body>
-    <nav class="navbar is-fixed-top is-success" role="navigation" aria-label="main navigation">
-      <div class="navbar-brand"><a class="navbar-item" href="/"><strong>Agenda de Laboratorio</strong></a></div>
-      <div class="navbar-end">
+    <nav class="navbar is-success" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand" style="float: left;"><a class="navbar-item" href="/"><strong>Agenda de Laboratorio</strong></a></div>
+      <div class="navbar-item" style="float: left; margin-top: 0.3em;">
         <% if authenticated? %>
-          <div class="navbar-item">
-            <span style="margin-right: 2em;"><%= current_user.first_name %> <%= current_user.last_name %></span>
-            <div class="buttons"><a class="button is-light" href="/logout">Salir</a></div>
-          </div>
+            <span style="color: #fff; margin-right: 2em;"><%= current_user.first_name %> <%= current_user.last_name %></span>
+            <a href="/logout">[ Salir ]</a>
         <% else %>
-          <div class="navbar-item"><div class="buttons"><a class="button is-light" href="/auth/google_oauth2">Login</a></div></div>
+          <a href="/auth/google_oauth2">[ Entrar ]</a>
         <% end %>
       </div>
+      <div class="is-clearfix"></div>
     </nav>
     <div class="controls">
       <% 
@@ -63,3 +62,4 @@
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   </body>
 </html>
+

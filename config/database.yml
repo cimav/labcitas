@@ -13,13 +13,13 @@ default: &default
   adapter: mysql2
   encoding: utf8mb4
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: root
-  password:
-  host: localhost
+  host: fermi.cimav.edu.mx
+  username: admin
+  password: azul0735
 
 development:
   <<: *default
-  database: labcitas_development
+  database: labcitas_production
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -50,5 +50,3 @@ test:
 production:
   <<: *default
   database: labcitas_production
-  username: labcitas
-  password: <%= ENV['LABCITAS_DATABASE_PASSWORD'] %>
