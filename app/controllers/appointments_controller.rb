@@ -13,6 +13,10 @@ class AppointmentsController < ApplicationController
     @appointments =  Appointment.where(appointment_date: @date).order(:start, :end)
     render layout: 'standalone'
   end
+  
+  def no
+    render layout: 'standalone'
+  end
 
   def index
   	@date = Time.now.strftime("%Y-%m-%d")

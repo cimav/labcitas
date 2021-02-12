@@ -12,4 +12,5 @@ Rails.application.routes.draw do
   get '/lista/:date' => 'appointments#list'
   root :to => 'appointments#index'
   post '/citas/marcar/:id' => 'appointments#mark'
+  #root :to => 'appointments#no'
 end
